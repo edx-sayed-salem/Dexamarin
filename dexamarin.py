@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import os
 import shutil
@@ -114,13 +115,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     srcFile = args.file
-    if (args.single_assembly == False):
-        if args.output_dir:
-            outName = args.output_dir + "decompiled.assemblies"
+    try:
+        if (args.single_assembly == False):
+            if args.output_dir:
+                outName = args.output_dir + "decompiled.assemblies"
+            else:
+                outName = f'{srcFile.replace(".apk", "")}/decompiled.assemblies'
+            if not os.path.isdir(outName):
+                os.mkdir(outName)
+            decompileAssemblies(srcFile, outName)
         else:
-            outName = f'{srcFile}/decompiled.assemblies'
-        os.mkdir(outName)
-        decompileAssemblies(srcFile, outName)
-    else:
-        decompressedName = decompressXalz(srcFile, srcFile.replace(".dll", ".decompressed.dll"))
-        decompileAssembly(decompressedName, decompressedName.replace(".decompressed.dll", ".decompiled.cs"))
+            decompressedName = decompressXalz(srcFile, srcFile.replace(".dll", ".decompressed.dll"))
+            decompileAssembly(decompressedName, decompressedName.replace(".decompressed.dll", ".decompiled.cs"))
+        exit(0)
+    except:
+        exit(1)

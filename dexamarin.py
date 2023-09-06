@@ -109,11 +109,16 @@ if __name__ == "__main__":
                         help='the apk to decompile (or single assembly if the -s option is used)')
     parser.add_argument('-s', '--single-assembly', action='store_true', 
                         help='decompile a single assembly rather than an apk')
+    parser.add_argument('-o', '--output-dir', type=str, 
+                        help='path to save output to')
     args = parser.parse_args()
 
     srcFile = args.file
     if (args.single_assembly == False):
-        outName = srcFile.replace(".apk", ".decompiled.assemblies")
+        if args.output_dir:
+            outName = args.output_dir + "decompiled.assemblies"
+        else:
+            outName = f'{srcFile}/decompiled.assemblies'
         os.mkdir(outName)
         decompileAssemblies(srcFile, outName)
     else:

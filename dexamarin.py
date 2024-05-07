@@ -13,7 +13,7 @@ errorFiles = []
 def decompileAssemblies(apkPath, outDirName):
         assembliesFolderPath = outDirName + "/assemblies"
 
-        os.system('unzip {} -d {}'.format(apkPath, outDirName))
+        os.system('unzip {} -od {}'.format(apkPath, outDirName))
 
         for fname in os.listdir(outDirName):
             if fname != "assemblies":
